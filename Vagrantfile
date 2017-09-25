@@ -79,6 +79,10 @@ Vagrant.configure("2") do |config|
 
     sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd
 
+    cat > /home/vagrant/.bash_profile <<EOF
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+EOF
+
     cat > /home/vagrant/.bashrc <<EOF
 export HISTTIMEFORMAT="%d/%m/%y %T "
 export PS1="\\u@\\h:\\W \\$ "
