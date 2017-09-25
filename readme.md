@@ -12,15 +12,15 @@
 1. update `elasticsearch.url: "http://localhost:9200"` in config/kibana.conf
 1. cp config/logstash_agent.conf && config/logstash_indexer.conf
 
-### services
-1. sudo /etc/init.d/nginx start # done in vagrant up
-1. sudo /etc/init.d/redis start # done in vagrant up
-1. source ~/.bashrc
-1. ./bin/elasticsearch # done in vagrant up
-1. ./bin/loadstash -f config/loadstash_agent.conf # done in vagrant up
-1. ./bin/kibana # done in vagrant up
+### services (done in vagrant up)
+1. sudo /etc/init.d/nginx start
+1. sudo /etc/init.d/redis start
+1. ./bin/elasticsearch
+1. ./bin/loadstash -f config/loadstash_agent.conf
+1. ./bin/kibana
 
 ### test
 1. curl http://localhost:8080 # nginx
-1. curl http://locahost:9002  # es
+1. curl http://locahost:9200  # es
+1. curl http://locahost:9002  # logstash
 1. curl http://localhost:55601 # kibana
