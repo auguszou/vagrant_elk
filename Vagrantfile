@@ -108,7 +108,7 @@ EOF
 	sudo /etc/init.d/redis restart
 
 	su - vagrant -c "nohup /home/vagrant/elasticsearch-5.6.1/bin/elasticsearch 2>&1 >> /tmp/elastic_search.log &"
-	su - vagrant -c "nohup /home/vagrant/logstash-5.6.1/bin/logstash -f /home/vagrant/logstash-5.6.1/config/logstash_agent_conf 2>&1 >> /tmp/logstash.log &"
+	su - vagrant -c "nohup /home/vagrant/logstash-5.6.1/bin/logstash -f /home/vagrant/logstash-5.6.1/config/logstash_agent.conf 2>&1 >> /tmp/logstash.log &"
 	su - vagrant -c "nohup /home/vagrant/kibana-5.6.1-linux-x86_64/bin/kibana 2>&1 >> /tmp/kibana.log &"
 	sleep 1
   SHELL
