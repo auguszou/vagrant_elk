@@ -72,7 +72,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apk update
     apk upgrade
-    apk add redis curl wget nginx bash bash-completion ca-certificates
+    apk add redis curl wget nginx bash bash-completion ca-certificates openjdk8
 		wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
 		wget -q -O /tmp/glibc-2.25-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk
 		apk add /tmp/glibc-2.25-r0.apk
@@ -87,14 +87,14 @@ alias la='ls -A'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
 
-export JAVA_HOME=/home/vagrant/jdk1.8.0_152
-export PATH=$PATH:$JAVA_HOME/bin
+# export JAVA_HOME=/home/vagrant/jdk1.8.0_152
+# export PATH=$PATH:$JAVA_HOME/bin
 source /etc/profile.d/bash_completion.sh
 EOF
 
 	chown -R vagrant:vagrant /home/vagrant/
 
-	tar xf /vagrant/jdk-8u152-ea-bin-b05-linux-x64-20_jun_2017.tar.gz -C /home/vagrant/
+	# tar xf /vagrant/jdk-8u152-ea-bin-b05-linux-x64-20_jun_2017.tar.gz -C /home/vagrant/
 	tar xf /vagrant/elasticsearch-5.6.1.tgz -C /home/vagrant/
 	tar xf /vagrant/logstash-5.6.1.tgz -C /home/vagrant/
 	tar xf /vagrant/kibana-5.6.1-linux-x86_64.tgz -C /home/vagrant/
