@@ -4,7 +4,7 @@
 1. curl https://artifacts.elastic.co/downloads/kibana/kibana-5.6.1-linux-x86_64.tar.gz
 1. curl https://artifacts.elastic.co/downloads/kibana/kibana-5.6.1-linux-x86_64.tar.gz
 
-### setup
+### setup (done in vagrant up)
 1. setup java sdk
 1. untar all packages
 1. cp  nginx.conf
@@ -13,12 +13,11 @@
 1. cp config/logstash_agent.conf && config/logstash_indexer.conf
 
 ### services
-1. sudo /etc/init.d/nginx start
-1. sudo /etc/init.d/redis start
+1. sudo /etc/init.d/nginx start # done in vagrant up
+1. sudo /etc/init.d/redis start # done in vagrant up
 1. ./bin/elasticsearch
 1. ./bin/loadstash -f config/loadstash_agent.conf
 1. ./bin/kibana
-
 
 ### test
 1. curl://localhost:8080 # nginx
