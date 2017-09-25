@@ -16,9 +16,9 @@
 1. sudo /etc/init.d/nginx start # done in vagrant up
 1. sudo /etc/init.d/redis start # done in vagrant up
 1. source ~/.bashrc
-1. ./bin/elasticsearch
-1. ./bin/loadstash -f config/loadstash_agent.conf
-1. ./bin/kibana
+1. ./bin/elasticsearch # done in vagrant up
+1. ./bin/loadstash -f config/loadstash_agent.conf # done in vagrant up
+1. ./bin/kibana # done in vagrant up
 
 ### test
 1. curl http://localhost:8080 # nginx
