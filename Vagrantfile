@@ -24,6 +24,9 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 9002, host: 9002
+  config.vm.network "forwarded_port", guest: 9002, host: 9006
+  config.vm.network "forwarded_port", guest: 5601, host: 55601
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -43,7 +46,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder ".", "/vagrant"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -52,11 +55,11 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
-  
+
     # Customize the amount of memory on the VM:
-    vb.memory = "512"
+    vb.memory = "2048"
   end
-  
+
   config.vbguest.auto_update = false
 
   #
@@ -68,21 +71,35 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apk update
-    apk add elasticsearch=5.2.1-r0 redis=3.2.8-r0 logstash=5.4.1-r0 curl nginx
+    apk add redis curl wget nginx bash bash-completion
+    sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd
 
-    # kibana
-    curl -Lo /tmp/kibana-5.6.1-linux-x86_64.tar.gz https://artifacts.elastic.co/downloads/kibana/kibana-5.6.1-linux-x86_64.tar.gz && tar xf /tmp/kibana-5.6.1-linux-x86_64.tar.gz -C /opt/ && rm /tmp/kibana-5.6.1-linux-x86_64.tar.gz 
-    #  update elasticsearch.url in config/kibana.yml
-    #./bin/kibana
+    cat > /home/vagrant/.bashrc <<EOF
+export HISTTIMEFORMAT="%d/%m/%y %T "
+export PS1="\\u@\\h:\\W \\$ "
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
 
-    # nginx
+export JAVA_HOME=/home/vagrant/jdk1.8.0_152
+export PATH=$PATH:$JAVA_HOME/bin
+source /etc/profile.d/bash_completion.sh
+EOF
 
-    #log_format logstash '$http_host $server_addr $remote_addr [$time_local] "$request" '
-    #                '$request_body $status $body_bytes_sent "$http_referer" "$http_user_agent" '
-    #                '$request_time $upstream_response_time';
+	chown -R vagrant:vagrant /home/vagrant/
 
-    #access_log  /usr/share/nginx/logs/test.access.log  logstash;
+	tar xf /vagrant/jdk-8u152-ea-bin-b05-linux-x64-20_jun_2017.tar.gz -C /home/vagrant/
+	tar xf /vagrant/elasticsearch-5.6.1.tgz -C /home/vagrant/
+	tar xf /vagrant/logstash-5.6.1.tgz -C /home/vagrant/
+	tar xf /vagrant/kibana-5.6.1-linux-x86_64.tgz -C /home/vagrant/
 
-    # logstash
+	cp -rf /vagrant/nginx.conf /etc/nginx/
+	sudo /etc/init.d/nginx restart
+	sudo /etc/init.d/redis restart
+
+	# /home/vagrant/elasticsearch-5.6.1/bin/elasticsearch
+	# /home/vagrant/logstash-5.6.1/bin/logstash -f /home/vagrant/logstash-5.6.1/config/logstash_agent_conf
+	# /home/vagrant/kibana-5.6.1/bin/kibana
   SHELL
 end
