@@ -71,7 +71,12 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apk update
-    apk add redis curl wget nginx bash bash-completion
+    apk upgrade
+    apk add redis curl wget nginx bash bash-completion ca-certificates
+		wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub
+		wget -q -O /tmp/glibc-2.25-r0.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.25-r0/glibc-2.25-r0.apk
+		apk add /tmp/glibc-2.25-r0.apk
+
     sed -i "s#/bin/ash#/bin/bash#g" /etc/passwd
 
     cat > /home/vagrant/.bashrc <<EOF
